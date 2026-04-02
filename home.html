@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soham Pravin Gaikwad - Backend Developer</title>
+  <!-- Use Google Fonts (Inter) and FontAwesome for icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ── GLOBAL BACKGROUND EFFECTS ───────────────── -->
+  <canvas id="matrix-canvas"></canvas>
+  <div class="scanlines"></div>
+  <div class="glow-bg"></div>
+  <div class="ping-ring">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <nav id="navbar">
+    <div class="nav-content">
+      <a href="#hero" class="logo-dot" aria-label="Home"><span></span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#journey">Journey</a></li>
+        <li><a href="#contact" class="btn-contact-nav">Contact</a></li>
+      </ul>
+      <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+    </div>
+  </nav>
+
+  <header id="hero">
+    <!-- Subtle particle or gradient space wrapper -->
+    <div id="particles-js" class="hero-background"></div>
+    <div class="hero-content">
+      <h1 class="name">Soham Pravin Gaikwad</h1>
+      <h2 class="title">Backend Developer</h2>
+      <p class="tagline">Building scalable and efficient backend systems.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-secondary">Contact Me</a>
+        <a href="Professional%20Modern%20CV%20Resume.pdf" target="_blank" rel="noopener noreferrer"
+          class="btn btn-primary">Resume</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <a href="#about"><i class="fas fa-chevron-down"></i></a>
+    </div>
+  </header>
+
+  <main>
+    <section id="about" class="reveal section-padding">
+      <div class="container">
+        <div class="section-title">
+          <h2>About Me</h2>
+          <div class="underline"></div>
+        </div>
+        <div class="about-content">
+          <div class="about-text">
+            <p>I'm a passionate <span class="highlight">Backend Developer</span> who specializes in building scalable,
+              high-performance systems and APIs that power modern applications.</p>
+            <p>With a deep focus on system design, data structures, and clean architecture, I craft backend solutions
+              that are reliable, maintainable, and built to scale. I thrive on solving complex engineering problems and
+              turning ideas into production-ready software.</p>
+          </div>
+          <div class="about-illustration">
+            <div class="code-window">
+              <div class="window-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="window-body">
+                <pre><code><span class="keyword">const</span> <span class="variable">developer</span> = {
+  <span class="property">name</span>: <span class="string">"Soham Pravin Gaikwad"</span>,
+  <span class="property">role</span>: <span class="string">"Backend Developer"</span>,
+  <span class="property">focus</span>: [<span class="string">"System Design"</span>, <span class="string">"Scalable APIs"</span>],
+  <span class="property">passion</span>: [<span class="string">"Problem Solving"</span>, <span class="string">"Clean Architecture"</span>]
+};</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="reveal section-padding">
+      <div class="container">
+        <div class="section-title">
+          <h2>Skills & Technologies</h2>
+          <div class="underline"></div>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-category">
+            <div class="skill-header">
+              <div class="icon-box"><i class="fas fa-code"></i></div>
+              <h3>Programming</h3>
+            </div>
+            <ul class="skill-list">
+              <li>
+                <div class="skill-info"><span>Java</span> <span>85%</span></div>
+                <div class="progress">
+                  <div class="progress-bar" style="--target-width: 85%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="skill-info"><span>C</span> <span>75%</span></div>
+                <div class="progress">
+                  <div class="progress-bar" style="--target-width: 75%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="skill-info"><span>Python</span> <span>80%</span></div>
+                <div class="progress">
+                  <div class="progress-bar" style="--target-width: 80%"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-header">
+              <div class="icon-box"><i class="fas fa-server"></i></div>
+              <h3>Backend</h3>
+            </div>
+            <ul class="skill-list">
+              <li>
+                <div class="skill-info"><span>Node.js</span> <span>Learning</span></div>
+                <div class="progress">
+                  <div class="progress-bar" style="--target-width: 60%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="skill-info"><span>Databases (SQL)</span> <span>65%</span></div>
+                <div class="progress">
+                  <div class="progress-bar" style="--target-width: 65%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="skill-info"><span>REST APIs</span> <span>70%</span></div>
+                <div class="progress">
+                  <div class="progress-bar" style="--target-width: 70%"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-header">
+              <div class="icon-box"><i class="fas fa-brain"></i></div>
+              <h3>Concepts</h3>
+            </div>
+            <div class="concept-tags">
+              <span class="tag">Data Structures</span>
+              <span class="tag">Algorithms</span>
+              <span class="tag">OOP</span>
+              <span class="tag">System Design</span>
+              <span class="tag">Problem Solving</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-header">
+              <div class="icon-box"><i class="fas fa-tools"></i></div>
+              <h3>Tools & Workflow</h3>
+            </div>
+            <div class="tools-grid">
+              <div class="tool-item"><i class="fab fa-git-alt"></i><span>Git</span></div>
+              <div class="tool-item"><i class="fab fa-github"></i><span>GitHub</span></div>
+              <div class="tool-item"><i class="fas fa-code-branch"></i><span>VS Code</span></div>
+              <div class="tool-item"><i class="fab fa-linux"></i><span>Linux</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="reveal section-padding">
+      <div class="container">
+        <div class="section-title">
+          <h2>Featured Projects</h2>
+          <div class="underline"></div>
+        </div>
+        <div class="projects-grid">
+          <!-- Featured Project -->
+          <div class="project-card featured">
+            <div class="project-content">
+              <div class="project-label">Featured Work</div>
+              <h3 class="project-title">Java Chess Game</h3>
+              <div class="project-description">
+                <p>A fully functional, object-oriented chess game featuring a custom graphical user interface built with
+                  Swing. Implements robust game logic, move validation, and state management.</p>
+              </div>
+              <ul class="project-tech">
+                <li>Java</li>
+                <li>Swing</li>
+                <li>OOP Design</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Placeholder Project 1 -->
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-label">Learning Project</div>
+              <h3 class="project-title">RESTful API Service</h3>
+              <div class="project-description">
+                <p>A backend service built during my learning phase to manage external data sources efficiently.
+                  Features custom endpoints and data filtering.</p>
+              </div>
+              <ul class="project-tech">
+                <li>Node.js</li>
+                <li>Express</li>
+                <li>JSON</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Placeholder Project 2 -->
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-label">System Utility</div>
+              <h3 class="project-title">Task Scheduler CLI</h3>
+              <div class="project-description">
+                <p>A command-line tool written in C for scheduling and managing background tasks, demonstrating an
+                  understanding of core data structures.</p>
+              </div>
+              <ul class="project-tech">
+                <li>C Programming</li>
+                <li>Data Structures</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="journey" class="reveal section-padding">
+      <div class="container">
+        <div class="section-title">
+          <h2>Experience & Journey</h2>
+          <div class="underline"></div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-date">Core Expertise</div>
+              <h3>Backend Engineering</h3>
+              <p>Architecting and building robust, scalable backend systems using Java, Node.js, and REST APIs — focused
+                on performance, maintainability, and clean design patterns.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-date">Proficiency</div>
+              <h3>Data Structures &amp; Algorithms</h3>
+              <p>Strong command of DSA principles applied to real-world engineering challenges — optimizing data flow,
+                query performance, and overall system efficiency.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-date">Ongoing Projects</div>
+              <h3>Systems &amp; API Development</h3>
+              <p>Building production-grade tools and services including RESTful APIs, command-line utilities, and
+                object-oriented applications that solve real engineering problems.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="reveal section-padding">
+      <div class="container">
+        <div class="section-title">
+          <h2>Get In Touch</h2>
+          <div class="underline"></div>
+        </div>
+        <div class="contact-wrapper">
+
+          <!-- LEFT: Info -->
+          <div class="contact-info">
+            <h3 class="contact-heading">Let's Connect</h3>
+            <p class="contact-subtext">Have a project in mind or want to discuss backend architecture? I'm always open
+              to collaboration, ideas, and technical challenges.</p>
+            <p class="contact-response"><span class="response-icon">⚡</span> I usually respond within 24 hours</p>
+
+            <div class="contact-details">
+              <div class="contact-item">
+                <div class="icon-circle"><i class="fas fa-envelope"></i></div>
+                <div>
+                  <h4>Email</h4>
+                  <a href="mailto:spgaikwad2696@gmail.com">spgaikwad2696@gmail.com</a>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="icon-circle"><i class="fas fa-briefcase"></i></div>
+                <div>
+                  <h4>Status</h4>
+                  <span>Open to Opportunities</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="social-links-container">
+              <p class="social-label">Find me on</p>
+              <div class="social-links">
+                <a href="https://github.com/SohamG2696" target="_blank" rel="noopener noreferrer"
+                  class="social-icon social-github" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/soham-gaikwad-5091a5322?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                  target="_blank" rel="noopener noreferrer" class="social-icon social-linkedin" aria-label="LinkedIn"><i
+                    class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/soham_2696/" target="_blank" rel="noopener noreferrer"
+                  class="social-icon social-instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Form -->
+          <div class="contact-form-container">
+            <form class="contact-form" id="contact-form" onsubmit="handleContactSubmit(event)">
+              <div class="float-group">
+                <input type="text" id="name" class="float-input" placeholder=" " required autocomplete="off">
+                <label for="name" class="float-label">Your Name</label>
+              </div>
+              <div class="float-group">
+                <input type="email" id="email" class="float-input" placeholder=" " required autocomplete="off">
+                <label for="email" class="float-label">Email Address</label>
+              </div>
+              <div class="float-group">
+                <textarea id="message" class="float-input float-textarea" placeholder=" " rows="5" required></textarea>
+                <label for="message" class="float-label">Your Message</label>
+              </div>
+              <button type="submit" class="contact-submit-btn" id="contact-send-btn">
+                <span class="btn-text">Send Message</span>
+                <i class="fas fa-paper-plane btn-icon"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo"><span class="footer-dot"></span></div>
+        <p>Built with passion by <span class="highlight">Soham Pravin Gaikwad</span></p>
+        <p class="copyright">&copy; <span id="year"></span> All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    /* ── MATRIX RAIN ─────────────────────────────── */
+    const _canvas = document.getElementById('matrix-canvas');
+    const _ctx = _canvas.getContext('2d');
+    function _resize() { _canvas.width = window.innerWidth; _canvas.height = window.innerHeight; }
+    _resize(); window.addEventListener('resize', _resize);
+    const _chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789ABCDEF{}[]<>/\\|+-=';
+    const _fs = 14;
+    let _cols, _drops;
+    function _initDrops() {
+      _cols = Math.floor(_canvas.width / _fs);
+      _drops = Array(_cols).fill(1).map(() => Math.random() * -120);
+    }
+    _initDrops(); window.addEventListener('resize', _initDrops);
+    function _drawMatrix() {
+      _ctx.fillStyle = 'rgba(5, 5, 5, 0.055)';
+      _ctx.fillRect(0, 0, _canvas.width, _canvas.height);
+      _ctx.font = `${_fs}px 'Share Tech Mono', monospace`;
+      for (let i = 0; i < _drops.length; i++) {
+        const ch = _chars[Math.floor(Math.random() * _chars.length)];
+        const x = i * _fs, y = _drops[i] * _fs;
+        _ctx.fillStyle = 'rgba(180,255,255,0.7)';
+        _ctx.fillText(ch, x, y);
+        _ctx.fillStyle = `rgba(0,173,181,${Math.random() * 0.4 + 0.15})`;
+        if (y > _canvas.height && Math.random() > 0.975) _drops[i] = 0;
+        _drops[i] += 0.45;
+      }
+    }
+    setInterval(_drawMatrix, 38);
+
+    /* ── CONTACT FORM ────────────────────────────── */
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('contact-send-btn');
+      const text = btn.querySelector('.btn-text');
+      const icon = btn.querySelector('.btn-icon');
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+      text.textContent = 'Sending…';
+      icon.className = 'fas fa-circle-notch fa-spin btn-icon';
+      setTimeout(() => {
+        text.textContent = 'Sent!';
+        icon.className = 'fas fa-check btn-icon';
+        btn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+        btn.style.opacity = '1';
+        document.getElementById('contact-form').reset();
+        setTimeout(() => {
+          text.textContent = 'Send Message';
+          icon.className = 'fas fa-paper-plane btn-icon';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      }, 1200);
+    }
+  </script>
+</body>
+
+</html>

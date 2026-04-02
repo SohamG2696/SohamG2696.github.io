@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soham Pravin Gaikwad — Enter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --cyan: #00ADB5;
+      --gold: #FFD369;
+      --bg: #050505;
+      --text: #EEEEEE;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 3.21l.01 17.59c0 .21.12.4.3.5.08.04.16.06.25.06.1 0 .21-.03.3-.09l5.42-4.04 4.5 8.95c.08.16.24.27.42.3.06.01.12.01.17.01.12 0 .23-.04.33-.1l2.45-1.5c.14-.08.24-.22.28-.38.04-.15.01-.32-.08-.45l-4.2-8.38h5.66c.16 0 .31-.08.4-.2.1-.13.13-.3.07-.46L6.44 3.05c-.09-.17-.27-.27-.46-.26-.18.01-.34.13-.43.3-.03.04-.05.08-.05.12z" fill="%2300ADB5" stroke="%23ffffff" stroke-width="1" stroke-linejoin="round"/></svg>') 5 3, auto !important;
+    }
+
+    a,
+    button,
+    .enter-btn {
+      cursor: pointer;
+    }
+
+    /* ─── MATRIX CANVAS ─────────────────────────────── */
+    #matrix-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.18;
+    }
+
+    /* ─── SCANLINES OVERLAY ───────────────────────────── */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.15) 2px,
+          rgba(0, 0, 0, 0.15) 4px);
+    }
+
+    /* ─── RADIAL GLOW ─────────────────────────────────── */
+    .glow-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0, 173, 181, 0.07) 0%, transparent 70%);
+      animation: pulse-glow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse-glow {
+      from {
+        opacity: 0.6;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* ─── CORNER BRACKETS ─────────────────────────────── */
+    .corner {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      z-index: 5;
+    }
+
+    .corner::before,
+    .corner::after {
+      content: '';
+      position: absolute;
+      background: var(--cyan);
+    }
+
+    .corner::before {
+      width: 2px;
+      height: 100%;
+    }
+
+    .corner::after {
+      width: 100%;
+      height: 2px;
+    }
+
+    .corner.tl {
+      top: 24px;
+      left: 24px;
+    }
+
+    .corner.tl::before {
+      top: 0;
+      left: 0;
+    }
+
+    .corner.tl::after {
+      top: 0;
+      left: 0;
+    }
+
+    .corner.tr {
+      top: 24px;
+      right: 24px;
+      transform: scaleX(-1);
+    }
+
+    .corner.tr::before {
+      top: 0;
+      left: 0;
+    }
+
+    .corner.tr::after {
+      top: 0;
+      left: 0;
+    }
+
+    .corner.bl {
+      bottom: 24px;
+      left: 24px;
+      transform: scaleY(-1);
+    }
+
+    .corner.bl::before {
+      top: 0;
+      left: 0;
+    }
+
+    .corner.bl::after {
+      top: 0;
+      left: 0;
+    }
+
+    .corner.br {
+      bottom: 24px;
+      right: 24px;
+      transform: scale(-1);
+    }
+
+    .corner.br::before {
+      top: 0;
+      left: 0;
+    }
+
+    .corner.br::after {
+      top: 0;
+      left: 0;
+    }
+
+    /* ─── MAIN STAGE ──────────────────────────────────── */
+    .stage {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    /* ─── ROLE GLITCH ─────────────────────────────────── */
+    .role-glitch {
+      position: relative;
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(1rem, 3vw, 1.6rem);
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .role-glitch::before,
+    .role-glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .role-glitch::before {
+      color: var(--gold);
+      animation: rg-top 4s infinite linear;
+      clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+      text-shadow: -2px 0 var(--gold);
+    }
+
+    .role-glitch::after {
+      color: #fff;
+      animation: rg-bot 4.5s infinite linear;
+      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+      text-shadow: 2px 0 var(--cyan);
+    }
+
+    @keyframes rg-top {
+
+      0%,
+      14%,
+      16%,
+      100% {
+        transform: translate(0);
+        opacity: 0;
+      }
+
+      15% {
+        transform: translate(-3px, -1px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes rg-bot {
+
+      0%,
+      28%,
+      32%,
+      100% {
+        transform: translate(0);
+        opacity: 0;
+      }
+
+      30% {
+        transform: translate(3px, 2px);
+        opacity: 1;
+      }
+    }
+
+    /* ─── BUTTON FLICKER ─────────────────────────────── */
+    @keyframes btn-flicker {
+
+      0%,
+      90%,
+      100% {
+        opacity: 1;
+      }
+
+      92% {
+        opacity: 0.6;
+      }
+
+      94% {
+        opacity: 1;
+      }
+
+      96% {
+        opacity: 0.7;
+      }
+
+      98% {
+        opacity: 1;
+      }
+    }
+
+    .enter-btn span:first-child {
+      animation: btn-flicker 5s infinite;
+    }
+
+    /* ─── GLITCH NAME ─────────────────────────────────── */
+    .glitch-wrapper {
+      position: relative;
+      opacity: 0;
+      animation: fade-up 0.7s ease forwards 0.9s;
+      margin-bottom: 0.6rem;
+    }
+
+    .glitch {
+      font-size: clamp(3rem, 9vw, 7rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-transform: uppercase;
+      position: relative;
+      display: inline-block;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+
+    .glitch::before {
+      color: var(--cyan);
+      animation: glitch-top 3s infinite linear;
+      text-shadow: -2px 0 var(--cyan);
+    }
+
+    .glitch::after {
+      color: var(--gold);
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+      animation: glitch-bot 3.5s infinite linear;
+      text-shadow: 2px 0 var(--gold);
+    }
+
+    @keyframes glitch-top {
+      0% {
+        transform: translate(0);
+        opacity: 0;
+      }
+
+      5% {
+        transform: translate(-3px, -1px);
+        opacity: 1;
+      }
+
+      10% {
+        transform: translate(3px, 1px);
+        opacity: 1;
+      }
+
+      15% {
+        transform: translate(0);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translate(0);
+        opacity: 0;
+      }
+    }
+
+    @keyframes glitch-bot {
+      0% {
+        transform: translate(0);
+        opacity: 0;
+      }
+
+      20% {
+        transform: translate(3px, 2px);
+        opacity: 1;
+      }
+
+      25% {
+        transform: translate(-3px, -2px);
+        opacity: 1;
+      }
+
+      30% {
+        transform: translate(0);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translate(0);
+        opacity: 0;
+      }
+    }
+
+    /* ─── ROLE TEXT ───────────────────────────────────── */
+    .role {
+      font-size: clamp(1rem, 3vw, 1.8rem);
+      font-weight: 300;
+      color: #888;
+      letter-spacing: 0.15em;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 1.4s;
+      margin-bottom: 3.5rem;
+    }
+
+    .role strong {
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    /* ─── DIVIDER LINE ────────────────────────────────── */
+    .divider {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      margin: 0 auto 3.5rem;
+      animation: expand-line 0.8s ease forwards 1.7s;
+    }
+
+    @keyframes expand-line {
+      to {
+        width: 280px;
+      }
+    }
+
+    /* ─── ENTER BUTTON ────────────────────────────────── */
+    .enter-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.1rem 3rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--cyan);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      overflow: hidden;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 2.1s;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .enter-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.77, 0, 0.18, 1);
+    }
+
+    .enter-btn:hover::before {
+      transform: scaleX(1);
+    }
+
+    .enter-btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .enter-btn:hover {
+      transform: translateY(-3px);
+      color: var(--bg);
+      box-shadow: 0 10px 40px rgba(0, 173, 181, 0.4), 0 0 80px rgba(255, 211, 105, 0.2);
+    }
+
+    /* Arrow */
+    .arrow {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      transition: transform 0.3s;
+    }
+
+    .enter-btn:hover .arrow {
+      transform: translateX(6px);
+    }
+
+    /* ─── BOOT LINES (bottom terminal text) ──────────── */
+    .boot-lines {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: #333;
+      letter-spacing: 0.12em;
+      opacity: 0;
+      animation: fade-up 0.5s ease forwards 2.5s;
+    }
+
+    .boot-lines .blink {
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* ─── SHARED FADE UP ──────────────────────────────── */
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─── EXIT FLASH ──────────────────────────────────── */
+    .flash-overlay {
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .flash-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ─── PING CIRCLES ────────────────────────────────── */
+    .ping-ring {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(0, 173, 181, 0.15);
+      animation: expand-ring 6s ease-out infinite;
+    }
+
+    .ring:nth-child(1) {
+      width: 200px;
+      height: 200px;
+      animation-delay: 0s;
+    }
+
+    .ring:nth-child(2) {
+      width: 400px;
+      height: 400px;
+      animation-delay: 1.5s;
+    }
+
+    .ring:nth-child(3) {
+      width: 700px;
+      height: 700px;
+      animation-delay: 3s;
+    }
+
+    @keyframes expand-ring {
+      0% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.8);
+      }
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 600px) {
+      .corner {
+        width: 36px;
+        height: 36px;
+      }
+
+      .corner.tl {
+        top: 14px;
+        left: 14px;
+      }
+
+      .corner.tr {
+        top: 14px;
+        right: 14px;
+      }
+
+      .corner.bl {
+        bottom: 14px;
+        left: 14px;
+      }
+
+      .corner.br {
+        bottom: 14px;
+        right: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Flash overlay for exit transition -->
+  <div class="flash-overlay" id="flash"></div>
+
+  <!-- Matrix rain -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Scanlines -->
+  <div class="scanlines"></div>
+
+  <!-- Radial background glow -->
+  <div class="glow-bg"></div>
+
+  <!-- Expanding ping rings -->
+  <div class="ping-ring">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+
+  <!-- Corner brackets -->
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <!-- Main content -->
+  <main class="stage">
+    <div class="glitch-wrapper">
+      <h1 class="glitch" data-text="Soham Gaikwad">Soham Gaikwad</h1>
+    </div>
+
+    <p class="role" style="margin-bottom:3.5rem;opacity:0;animation:fade-up 0.6s ease forwards 1.4s;">
+      <span class="role-glitch" data-text="Software Engineer">Software Engineer</span>
+    </p>
+
+    <div class="divider"></div>
+
+    <a id="enter-link" class="enter-btn" href="home.html">
+      <span>Enter Portfolio</span>
+      <span class="arrow">→</span>
+    </a>
+  </main>
+
+  <!-- Terminal footer -->
+  <div class="boot-lines">
+    <span>SYSTEM READY</span>&nbsp;&nbsp;<span class="blink">█</span>
+  </div>
+
+  <script>
+    /* ── MATRIX RAIN ─────────────────────────────────── */
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤゆよラリルレロワヲン0123456789ABCDEF{}[]<>/\\|+-=*&^%$#@!';
+    const fontSize = 14;
+    let columns;
+    let drops;
+
+    function initDrops() {
+      columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(1).map(() => Math.random() * -100);
+    }
+    initDrops();
+    window.addEventListener('resize', initDrops);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#00ADB5';
+      ctx.font = `${fontSize}px 'Share Tech Mono', monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        // Brighter top character
+        ctx.fillStyle = 'rgba(200, 255, 255, 0.9)';
+        ctx.fillText(char, x, y);
+
+        // Fade tail
+        ctx.fillStyle = `rgba(0, 173, 181, ${Math.random() * 0.5 + 0.2})`;
+
+        if (y > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i] += 0.5;
+      }
+    }
+
+    setInterval(drawMatrix, 35);
+
+    /* ── ENTER TRANSITION ──────────────────────────────── */
+    document.getElementById('enter-link').addEventListener('click', function (e) {
+      e.preventDefault();
+      const flash = document.getElementById('flash');
+      flash.style.background = '#050505';
+      flash.classList.add('active');
+      setTimeout(() => {
+        window.location.href = 'home.html';
+      }, 550);
+    });
+
+    // --- CHAIN BREAKING CURSOR ANIMATION ---
+    (function () {
+      const particles = [];
+      let lastX = window.innerWidth / 2, lastY = window.innerHeight / 2;
+
+      document.addEventListener('mousemove', (e) => {
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist > 15) {
+          createChainParticle(e.clientX, e.clientY, dx, dy);
+          lastX = e.clientX;
+          lastY = e.clientY;
+        }
+      });
+
+      function createChainParticle(x, y, dx, dy) {
+        const p = document.createElement('div');
+        p.style.cssText = `
+                position: fixed;
+                left: ${x}px;
+                top: ${y}px;
+                width: 10px;
+                height: 2px;
+                background: var(--cyan, #00ADB5);
+                box-shadow: 0 0 8px var(--cyan, #00ADB5);
+                pointer-events: none;
+                z-index: 9999;
+                border-radius: 2px;
+                transform-origin: center;
+            `;
+        document.body.appendChild(p);
+
+        const angle = Math.atan2(dy, dx);
+
+        const particle = {
+          el: p,
+          x: x,
+          y: y,
+          vx: -Math.cos(angle) * (Math.random() * 3 + 1) + (Math.random() - 0.5) * 2,
+          vy: -Math.sin(angle) * (Math.random() * 3 + 1) - 2,
+          life: 1.0,
+          rotation: angle * 180 / Math.PI,
+          rotVel: (Math.random() - 0.5) * 30
+        };
+        particles.push(particle);
+      }
+
+      function animateChain() {
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.vy += 0.2;
+          p.y += p.vy;
+          p.life -= 0.025;
+          p.rotation += p.rotVel;
+
+          p.el.style.transform = `translate(-50%, -50%) rotate(${p.rotation}deg) scale(${p.life})`;
+          p.el.style.opacity = p.life;
+
+          if (p.life <= 0) {
+            p.el.remove();
+            particles.splice(i, 1);
+          }
+        }
+        requestAnimationFrame(animateChain);
+      }
+      requestAnimationFrame(animateChain);
+    })();
+  </script>
+</body>
+
+</html>
