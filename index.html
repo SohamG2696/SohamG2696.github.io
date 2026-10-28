@@ -1,798 +1,570 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Soham Pravin Gaikwad — Enter</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Share+Tech+Mono&display=swap"
-    rel="stylesheet">
-  <style>
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --cyan: #00ADB5;
-      --gold: #FFD369;
-      --bg: #050505;
-      --text: #EEEEEE;
-    }
-
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-      font-family: 'Inter', sans-serif;
-      color: var(--text);
-      cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 3.21l.01 17.59c0 .21.12.4.3.5.08.04.16.06.25.06.1 0 .21-.03.3-.09l5.42-4.04 4.5 8.95c.08.16.24.27.42.3.06.01.12.01.17.01.12 0 .23-.04.33-.1l2.45-1.5c.14-.08.24-.22.28-.38.04-.15.01-.32-.08-.45l-4.2-8.38h5.66c.16 0 .31-.08.4-.2.1-.13.13-.3.07-.46L6.44 3.05c-.09-.17-.27-.27-.46-.26-.18.01-.34.13-.43.3-.03.04-.05.08-.05.12z" fill="%2300ADB5" stroke="%23ffffff" stroke-width="1" stroke-linejoin="round"/></svg>') 5 3, auto !important;
-    }
-
-    a,
-    button,
-    .enter-btn {
-      cursor: pointer;
-    }
-
-    /* ─── MATRIX CANVAS ─────────────────────────────── */
-    #matrix-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      opacity: 0.18;
-    }
-
-    /* ─── SCANLINES OVERLAY ───────────────────────────── */
-    .scanlines {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      background: repeating-linear-gradient(0deg,
-          transparent,
-          transparent 2px,
-          rgba(0, 0, 0, 0.15) 2px,
-          rgba(0, 0, 0, 0.15) 4px);
-    }
-
-    /* ─── RADIAL GLOW ─────────────────────────────────── */
-    .glow-bg {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      background:
-        radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0, 173, 181, 0.07) 0%, transparent 70%);
-      animation: pulse-glow 4s ease-in-out infinite alternate;
-    }
-
-    @keyframes pulse-glow {
-      from {
-        opacity: 0.6;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    /* ─── CORNER BRACKETS ─────────────────────────────── */
-    .corner {
-      position: fixed;
-      width: 60px;
-      height: 60px;
-      z-index: 5;
-    }
-
-    .corner::before,
-    .corner::after {
-      content: '';
-      position: absolute;
-      background: var(--cyan);
-    }
-
-    .corner::before {
-      width: 2px;
-      height: 100%;
-    }
-
-    .corner::after {
-      width: 100%;
-      height: 2px;
-    }
-
-    .corner.tl {
-      top: 24px;
-      left: 24px;
-    }
-
-    .corner.tl::before {
-      top: 0;
-      left: 0;
-    }
-
-    .corner.tl::after {
-      top: 0;
-      left: 0;
-    }
-
-    .corner.tr {
-      top: 24px;
-      right: 24px;
-      transform: scaleX(-1);
-    }
-
-    .corner.tr::before {
-      top: 0;
-      left: 0;
-    }
-
-    .corner.tr::after {
-      top: 0;
-      left: 0;
-    }
-
-    .corner.bl {
-      bottom: 24px;
-      left: 24px;
-      transform: scaleY(-1);
-    }
-
-    .corner.bl::before {
-      top: 0;
-      left: 0;
-    }
-
-    .corner.bl::after {
-      top: 0;
-      left: 0;
-    }
-
-    .corner.br {
-      bottom: 24px;
-      right: 24px;
-      transform: scale(-1);
-    }
-
-    .corner.br::before {
-      top: 0;
-      left: 0;
-    }
-
-    .corner.br::after {
-      top: 0;
-      left: 0;
-    }
-
-    /* ─── MAIN STAGE ──────────────────────────────────── */
-    .stage {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      text-align: center;
-      padding: 2rem;
-    }
-
-    /* ─── ROLE GLITCH ─────────────────────────────────── */
-    .role-glitch {
-      position: relative;
-      display: inline-block;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: clamp(1rem, 3vw, 1.6rem);
-      font-weight: 700;
-      color: var(--cyan);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .role-glitch::before,
-    .role-glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .role-glitch::before {
-      color: var(--gold);
-      animation: rg-top 4s infinite linear;
-      clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
-      text-shadow: -2px 0 var(--gold);
-    }
-
-    .role-glitch::after {
-      color: #fff;
-      animation: rg-bot 4.5s infinite linear;
-      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-      text-shadow: 2px 0 var(--cyan);
-    }
-
-    @keyframes rg-top {
-
-      0%,
-      14%,
-      16%,
-      100% {
-        transform: translate(0);
-        opacity: 0;
-      }
-
-      15% {
-        transform: translate(-3px, -1px);
-        opacity: 1;
-      }
-    }
-
-    @keyframes rg-bot {
-
-      0%,
-      28%,
-      32%,
-      100% {
-        transform: translate(0);
-        opacity: 0;
-      }
-
-      30% {
-        transform: translate(3px, 2px);
-        opacity: 1;
-      }
-    }
-
-    /* ─── BUTTON FLICKER ─────────────────────────────── */
-    @keyframes btn-flicker {
-
-      0%,
-      90%,
-      100% {
-        opacity: 1;
-      }
-
-      92% {
-        opacity: 0.6;
-      }
-
-      94% {
-        opacity: 1;
-      }
-
-      96% {
-        opacity: 0.7;
-      }
-
-      98% {
-        opacity: 1;
-      }
-    }
-
-    .enter-btn span:first-child {
-      animation: btn-flicker 5s infinite;
-    }
-
-    /* ─── GLITCH NAME ─────────────────────────────────── */
-    .glitch-wrapper {
-      position: relative;
-      opacity: 0;
-      animation: fade-up 0.7s ease forwards 0.9s;
-      margin-bottom: 0.6rem;
-    }
-
-    .glitch {
-      font-size: clamp(3rem, 9vw, 7rem);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      color: #fff;
-      text-transform: uppercase;
-      position: relative;
-      display: inline-block;
-    }
-
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-    }
-
-    .glitch::before {
-      color: var(--cyan);
-      animation: glitch-top 3s infinite linear;
-      text-shadow: -2px 0 var(--cyan);
-    }
-
-    .glitch::after {
-      color: var(--gold);
-      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-      animation: glitch-bot 3.5s infinite linear;
-      text-shadow: 2px 0 var(--gold);
-    }
-
-    @keyframes glitch-top {
-      0% {
-        transform: translate(0);
-        opacity: 0;
-      }
-
-      5% {
-        transform: translate(-3px, -1px);
-        opacity: 1;
-      }
-
-      10% {
-        transform: translate(3px, 1px);
-        opacity: 1;
-      }
-
-      15% {
-        transform: translate(0);
-        opacity: 0;
-      }
-
-      100% {
-        transform: translate(0);
-        opacity: 0;
-      }
-    }
-
-    @keyframes glitch-bot {
-      0% {
-        transform: translate(0);
-        opacity: 0;
-      }
-
-      20% {
-        transform: translate(3px, 2px);
-        opacity: 1;
-      }
-
-      25% {
-        transform: translate(-3px, -2px);
-        opacity: 1;
-      }
-
-      30% {
-        transform: translate(0);
-        opacity: 0;
-      }
-
-      100% {
-        transform: translate(0);
-        opacity: 0;
-      }
-    }
-
-    /* ─── ROLE TEXT ───────────────────────────────────── */
-    .role {
-      font-size: clamp(1rem, 3vw, 1.8rem);
-      font-weight: 300;
-      color: #888;
-      letter-spacing: 0.15em;
-      opacity: 0;
-      animation: fade-up 0.6s ease forwards 1.4s;
-      margin-bottom: 3.5rem;
-    }
-
-    .role strong {
-      color: var(--cyan);
-      font-weight: 600;
-    }
-
-    /* ─── DIVIDER LINE ────────────────────────────────── */
-    .divider {
-      width: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-      margin: 0 auto 3.5rem;
-      animation: expand-line 0.8s ease forwards 1.7s;
-    }
-
-    @keyframes expand-line {
-      to {
-        width: 280px;
-      }
-    }
-
-    /* ─── ENTER BUTTON ────────────────────────────────── */
-    .enter-btn {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.1rem 3rem;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--cyan);
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      overflow: hidden;
-      opacity: 0;
-      animation: fade-up 0.6s ease forwards 2.1s;
-      transition: color 0.3s, transform 0.3s;
-    }
-
-    .enter-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--gold);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.4s cubic-bezier(0.77, 0, 0.18, 1);
-    }
-
-    .enter-btn:hover::before {
-      transform: scaleX(1);
-    }
-
-    .enter-btn span {
-      position: relative;
-      z-index: 1;
-    }
-
-    .enter-btn:hover {
-      transform: translateY(-3px);
-      color: var(--bg);
-      box-shadow: 0 10px 40px rgba(0, 173, 181, 0.4), 0 0 80px rgba(255, 211, 105, 0.2);
-    }
-
-    /* Arrow */
-    .arrow {
-      position: relative;
-      z-index: 1;
-      display: inline-block;
-      transition: transform 0.3s;
-    }
-
-    .enter-btn:hover .arrow {
-      transform: translateX(6px);
-    }
-
-    /* ─── BOOT LINES (bottom terminal text) ──────────── */
-    .boot-lines {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      text-align: center;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.7rem;
-      color: #333;
-      letter-spacing: 0.12em;
-      opacity: 0;
-      animation: fade-up 0.5s ease forwards 2.5s;
-    }
-
-    .boot-lines .blink {
-      animation: blink 1s step-end infinite;
-    }
-
-    @keyframes blink {
-      50% {
-        opacity: 0;
-      }
-    }
-
-    /* ─── SHARED FADE UP ──────────────────────────────── */
-    @keyframes fade-up {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ─── EXIT FLASH ──────────────────────────────────── */
-    .flash-overlay {
-      position: fixed;
-      inset: 0;
-      background: #fff;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-    }
-
-    .flash-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    /* ─── PING CIRCLES ────────────────────────────────── */
-    .ping-ring {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    .ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      border: 1px solid rgba(0, 173, 181, 0.15);
-      animation: expand-ring 6s ease-out infinite;
-    }
-
-    .ring:nth-child(1) {
-      width: 200px;
-      height: 200px;
-      animation-delay: 0s;
-    }
-
-    .ring:nth-child(2) {
-      width: 400px;
-      height: 400px;
-      animation-delay: 1.5s;
-    }
-
-    .ring:nth-child(3) {
-      width: 700px;
-      height: 700px;
-      animation-delay: 3s;
-    }
-
-    @keyframes expand-ring {
-      0% {
-        opacity: 0.5;
-        transform: translate(-50%, -50%) scale(0.5);
-      }
-
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(1.8);
-      }
-    }
-
-    /* ─── RESPONSIVE ──────────────────────────────────── */
-    @media (max-width: 600px) {
-      .corner {
-        width: 36px;
-        height: 36px;
-      }
-
-      .corner.tl {
-        top: 14px;
-        left: 14px;
-      }
-
-      .corner.tr {
-        top: 14px;
-        right: 14px;
-      }
-
-      .corner.bl {
-        bottom: 14px;
-        left: 14px;
-      }
-
-      .corner.br {
-        bottom: 14px;
-        right: 14px;
-      }
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soham Gaikwad — AI/ML Engineer & Systems Developer</title>
+  <meta name="description" content="Personal portfolio of Soham Gaikwad, AI/ML Engineer and Computer Engineering student specializing in Deep Learning, Computer Vision, Agentic AI, and production FastAPI backends." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Google Fonts: Host Grotesk & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20261028-5" />
 </head>
+<body class="elenavoss-body">
 
-<body>
-
-  <!-- Flash overlay for exit transition -->
-  <div class="flash-overlay" id="flash"></div>
-
-  <!-- Matrix rain -->
-  <canvas id="matrix-canvas"></canvas>
-
-  <!-- Scanlines -->
-  <div class="scanlines"></div>
-
-  <!-- Radial background glow -->
-  <div class="glow-bg"></div>
-
-  <!-- Expanding ping rings -->
-  <div class="ping-ring">
-    <div class="ring"></div>
-    <div class="ring"></div>
-    <div class="ring"></div>
-  </div>
-
-  <!-- Corner brackets -->
-  <div class="corner tl"></div>
-  <div class="corner tr"></div>
-  <div class="corner bl"></div>
-  <div class="corner br"></div>
-
-  <!-- Main content -->
-  <main class="stage">
-    <div class="glitch-wrapper">
-      <h1 class="glitch" data-text="Soham Gaikwad">Soham Gaikwad</h1>
-    </div>
-
-    <p class="role" style="margin-bottom:3.5rem;opacity:0;animation:fade-up 0.6s ease forwards 1.4s;">
-      <span class="role-glitch" data-text="Software Engineer">Software Engineer</span>
-    </p>
-
-    <div class="divider"></div>
-
-    <a id="enter-link" class="enter-btn" href="home.html">
-      <span>Enter Portfolio</span>
-      <span class="arrow">→</span>
+  <!-- ==========================================================================
+       Header / Navigation
+       ========================================================================== -->
+  <header id="header">
+    <a href="#hero" class="header-logo" aria-label="Soham Gaikwad Home">
+      <span>Soham</span>
+      <span class="logo-dot" aria-hidden="true"></span>
+      <span class="logo-tag">AI / ML</span>
     </a>
+
+    <div class="header-right">
+      <a href="#portfolio" class="header-nav-link">Projects</a>
+      <a href="#services" class="header-nav-link">Skills</a>
+      <a href="#awards" class="header-nav-link">Milestones</a>
+
+      <a href="https://www.linkedin.com/in/soham-gaikwad-6573b0271" class="pill-button" target="_blank" rel="noopener noreferrer">
+        <span class="pill-dot" aria-hidden="true"></span>
+        <span>Get in Touch</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================================
+         Section 0: Hero & Shrink-To-Collage Transition (#hero)
+         ========================================================================== -->
+    <section id="hero">
+        <!-- Underneath Collage Background (revealed as hero shrinks) -->
+        <div class="hero-collage" id="hero-collage" aria-hidden="true">
+          <!-- Column 1 -->
+          <div class="hero-collage-col marquee-col-1">
+            <div class="hero-collage-item">
+              <img src="assets/factorymind-preview.jpg" alt="FactoryMind AI Digital Twin" loading="lazy" />
+              <div class="hero-collage-caption">
+                <h4>FactoryMind AI</h4>
+                <span>Digital Twin / Agentic AI</span>
+              </div>
+            </div>
+            <div class="hero-collage-item">
+              <img src="assets/retinal-preview.jpg" alt="AI Retinal Disease Predictor" loading="lazy" />
+              <div class="hero-collage-caption">
+                <h4>AI Retinal Predictor</h4>
+                <span>Deep CNN &amp; Grad-CAM</span>
+              </div>
+            </div>
+            <div class="hero-collage-item">
+              <img src="assets/satquery-preview.jpg" alt="SatQuery AI Platform" loading="lazy" />
+              <div class="hero-collage-caption">
+                <h4>SatQuery AI</h4>
+                <span>Geospatial Intelligence</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="hero-collage-col marquee-col-2">
+            <div class="hero-collage-item">
+              <img src="assets/satquery-preview.jpg" alt="SatQuery AI Platform" loading="lazy" />
+              <div class="hero-collage-caption">
+                <h4>SatQuery AI</h4>
+                <span>Geospatial Intelligence</span>
+              </div>
+            </div>
+            <div class="hero-collage-item">
+              <img src="assets/scamshield-preview.jpg" alt="ScamShield Security Engine" loading="lazy" />
+              <div class="hero-collage-caption">
+                <h4>ScamShield</h4>
+                <span>NLP Risk Classification</span>
+              </div>
+            </div>
+            <div class="hero-collage-item">
+              <img src="assets/heart-preview.jpg" alt="Heart Disease Predictor" loading="lazy" />
+              <div class="hero-collage-caption">
+                <h4>Heart Disease Predictor</h4>
+                <span>FastAPI Clinical Inference</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="hero-stage">
+        <!-- The Hero Container that shrinks into a centered card on scroll -->
+        <div class="hero-container">
+          <div class="hero-content-wrapper">
+            <!-- Left Column -->
+            <div class="hero-left">
+              <div class="hero-badge" id="hero-badge">
+                <span class="live-dot" aria-hidden="true"></span>
+                <span>Available for AI / ML Roles &amp; Internships</span>
+              </div>
+
+              <h1 class="hero-title" id="hero-title">
+                <span class="word"><span class="word-inner">Soham</span></span><br />
+                <span class="word"><span class="word-inner">Gaikwad.</span></span>
+              </h1>
+              <p class="hero-subtitle"><strong>B.Tech Computer Engineering</strong><br /><span>Student</span></p>
+            </div>
+
+            <!-- Right Column -->
+            <div class="hero-right">
+              <div class="hero-supporting-item">
+                <p class="label-title">Machine Learning &amp; Deep Learning</p>
+                <p class="label-desc">Computer Vision, NLP &amp; Agentic Systems</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Central Layered Artwork Mask Reveal -->
+          <div class="hero-av-img hero-mask-reveal" id="hero-av-img" aria-hidden="true">
+            <img src="assets/hero-ai-agent.png" alt="Futuristic AI agent robot with amber lighting" width="1024" height="1536" fetchpriority="high" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 1: Pinned Selected Projects Showcase (#portfolio)
+         ========================================================================== -->
+    <section id="portfolio">
+      <div class="circle-clip" aria-hidden="true"></div>
+
+      <div class="portfolio-sticky">
+        <div class="portfolio-header">
+          <h2>Featured Projects</h2>
+          <span class="portfolio-count">[ 05 SELECTED WORKS ]</span>
+        </div>
+
+        <div class="portfolio-body">
+          <!-- Left Column: Vertical Project List with Track -->
+          <div class="portfolio-nav">
+            <div class="portfolio-nav-track"></div>
+            <div class="portfolio-nav-progress" id="portfolio-progress"></div>
+
+            <div class="portfolio-nav-list">
+              <!-- Item 01 -->
+              <div class="portfolio-nav-item active" data-project-index="0">
+                <span class="portfolio-nav-dot" aria-hidden="true"></span>
+                <div class="portfolio-nav-text">
+                  <h3>01 &nbsp;FactoryMind AI</h3>
+                  <p>Digital Twin &bull; Agentic AI &bull; FastAPI</p>
+                </div>
+              </div>
+
+              <!-- Item 02 -->
+              <div class="portfolio-nav-item" data-project-index="1">
+                <span class="portfolio-nav-dot" aria-hidden="true"></span>
+                <div class="portfolio-nav-text">
+                  <h3>02 &nbsp;SatQuery AI</h3>
+                  <p>Computer Vision &bull; Geospatial &bull; PyTorch</p>
+                </div>
+              </div>
+
+              <!-- Item 03 -->
+              <div class="portfolio-nav-item" data-project-index="2">
+                <span class="portfolio-nav-dot" aria-hidden="true"></span>
+                <div class="portfolio-nav-text">
+                  <h3>03 &nbsp;AI Retinal Disease Predictor</h3>
+                  <p>Deep Learning &bull; Grad-CAM &bull; Medical AI</p>
+                </div>
+              </div>
+
+              <!-- Item 04 -->
+              <div class="portfolio-nav-item" data-project-index="3">
+                <span class="portfolio-nav-dot" aria-hidden="true"></span>
+                <div class="portfolio-nav-text">
+                  <h3>04 &nbsp;ScamShield</h3>
+                  <p>NLP Classification &bull; AI Security &bull; Scikit-Learn</p>
+                </div>
+              </div>
+
+              <!-- Item 05 -->
+              <div class="portfolio-nav-item" data-project-index="4">
+                <span class="portfolio-nav-dot" aria-hidden="true"></span>
+                <div class="portfolio-nav-text">
+                  <h3>05 &nbsp;AI Heart Disease Predictor</h3>
+                  <p>Machine Learning &bull; Healthcare &bull; FastAPI</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Large Rounded Preview Display -->
+          <div class="portfolio-preview-wrap">
+            <!-- Card 01 -->
+            <div class="portfolio-preview-card" data-card-index="0">
+              <img src="assets/factorymind-preview.jpg" alt="FactoryMind AI Digital Twin Interface" />
+              <div class="portfolio-card-overlay">
+                <div class="portfolio-card-tags">
+                  <span class="portfolio-tag">Digital Twin</span>
+                  <span class="portfolio-tag">Agentic AI</span>
+                  <span class="portfolio-tag">FastAPI</span>
+                  <span class="portfolio-tag">Supabase</span>
+                  <span class="portfolio-tag">Next.js</span>
+                </div>
+                <h4>FactoryMind AI</h4>
+                <p>AI-powered digital twin platform simulating factory operations, monitoring sensor behaviors, and deploying autonomous diagnostic agents for real-time anomaly prevention.</p>
+                <div class="portfolio-card-actions">
+                  <a href="https://github.com/SohamG2696" target="_blank" rel="noopener noreferrer" class="portfolio-btn portfolio-btn-primary">
+                    <span>View GitHub Repository</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                  </a>
+                  <a href="#footer" class="portfolio-btn" data-action="copy-email">Contact for Architecture Details</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 02 -->
+            <div class="portfolio-preview-card" data-card-index="1">
+              <img src="assets/satquery-preview.jpg" alt="SatQuery AI Geospatial Intelligence" />
+              <div class="portfolio-card-overlay">
+                <div class="portfolio-card-tags">
+                  <span class="portfolio-tag">Computer Vision</span>
+                  <span class="portfolio-tag">PyTorch</span>
+                  <span class="portfolio-tag">Vector DB</span>
+                  <span class="portfolio-tag">Docker</span>
+                </div>
+                <h4>SatQuery AI</h4>
+                <p>AI satellite intelligence platform enabling natural language interaction with multi-spectral imagery, automated ground-feature detection, and semantic geospatial search.</p>
+                <div class="portfolio-card-actions">
+                  <a href="https://github.com/SohamG2696" target="_blank" rel="noopener noreferrer" class="portfolio-btn portfolio-btn-primary">
+                    <span>View GitHub Repository</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                  </a>
+                  <a href="#footer" class="portfolio-btn" data-action="copy-email">Discuss Use Case</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 03 -->
+            <div class="portfolio-preview-card" data-card-index="2">
+              <img src="assets/retinal-preview.jpg" alt="AI Retinal Disease Predictor with Grad-CAM" />
+              <div class="portfolio-card-overlay">
+                <div class="portfolio-card-tags">
+                  <span class="portfolio-tag">Deep Learning</span>
+                  <span class="portfolio-tag">TensorFlow</span>
+                  <span class="portfolio-tag">Grad-CAM</span>
+                  <span class="portfolio-tag">Medical AI</span>
+                </div>
+                <h4>AI Retinal Disease Predictor</h4>
+                <p>Deep learning retinal abnormality classification system with Grad-CAM visual heatmaps, delivering transparent interpretability for clinical decision support.</p>
+                <div class="portfolio-card-actions">
+                  <a href="https://github.com/SohamG2696" target="_blank" rel="noopener noreferrer" class="portfolio-btn portfolio-btn-primary">
+                    <span>View GitHub Repository</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                  </a>
+                  <a href="#footer" class="portfolio-btn" data-action="copy-email">Request Demo</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 04 -->
+            <div class="portfolio-preview-card" data-card-index="3">
+              <img src="assets/scamshield-preview.jpg" alt="ScamShield Threat Analyzer" />
+              <div class="portfolio-card-overlay">
+                <div class="portfolio-card-tags">
+                  <span class="portfolio-tag">NLP Classification</span>
+                  <span class="portfolio-tag">Scikit-learn</span>
+                  <span class="portfolio-tag">FastAPI</span>
+                  <span class="portfolio-tag">React</span>
+                </div>
+                <h4>ScamShield</h4>
+                <p>Natural language processing threat analysis service evaluating semantic deception markers, phishing structures, and domain risks via low-latency REST endpoints.</p>
+                <div class="portfolio-card-actions">
+                  <a href="https://github.com/SohamG2696" target="_blank" rel="noopener noreferrer" class="portfolio-btn portfolio-btn-primary">
+                    <span>View GitHub Repository</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                  </a>
+                  <a href="#footer" class="portfolio-btn" data-action="copy-email">Review Code</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 05 -->
+            <div class="portfolio-preview-card" data-card-index="4">
+              <img src="assets/heart-preview.jpg" alt="AI Heart Disease Clinical Inference" />
+              <div class="portfolio-card-overlay">
+                <div class="portfolio-card-tags">
+                  <span class="portfolio-tag">Machine Learning</span>
+                  <span class="portfolio-tag">FastAPI</span>
+                  <span class="portfolio-tag">Pandas</span>
+                  <span class="portfolio-tag">NumPy</span>
+                </div>
+                <h4>AI Heart Disease Predictor</h4>
+                <p>Clinical risk evaluation microservice built with supervised classification, feature normalization pipelines, and an accessible frontend for rapid diagnosis estimation.</p>
+                <div class="portfolio-card-actions">
+                  <a href="https://github.com/SohamG2696" target="_blank" rel="noopener noreferrer" class="portfolio-btn portfolio-btn-primary">
+                    <span>View GitHub Repository</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                  </a>
+                  <a href="#footer" class="portfolio-btn" data-action="copy-email">Inspect Pipeline</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-bottom-glow" aria-hidden="true">
+        <div class="portfolio-bottom-glow-inner"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 3: Pinned Horizontal Skills Track (#services)
+         ========================================================================== -->
+    <section id="services" class="services-section">
+      <div class="services-intro">
+        <h2>Technical Skills &amp;<br />Engineering Toolkit</h2>
+        <p>My technical practice spans the full AI lifecycle: from exploratory data analysis and deep neural architecture training, to high-throughput inference APIs and modern reactive interfaces.</p>
+      </div>
+
+      <div class="services-sticky">
+        <div class="services-track-container">
+          <div class="services-row">
+            <!-- Skill Card 1 -->
+            <div class="services-card">
+              <div class="services-card-top">
+                <span class="services-card-num">01</span>
+                <span class="services-card-tag">Core Focus</span>
+              </div>
+              <div class="services-card-mid">
+                <h3>AI &amp; Machine Learning</h3>
+                <p>Designing, evaluating, and deploying statistical models and neural networks for prediction and inference.</p>
+                <div class="services-skills-pills">
+                  <span class="skill-pill">Machine Learning</span>
+                  <span class="skill-pill">Deep Learning</span>
+                  <span class="skill-pill">NLP</span>
+                  <span class="skill-pill">Computer Vision</span>
+                  <span class="skill-pill">LLMs</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skill Card 2 -->
+            <div class="services-card">
+              <div class="services-card-top">
+                <span class="services-card-num">02</span>
+                <span class="services-card-tag">Deep Learning</span>
+              </div>
+              <div class="services-card-mid">
+                <h3>Deep Neural Architectures</h3>
+                <p>Developing convolutional neural networks, transfer learning flows, and visual explainability layers.</p>
+                <div class="services-skills-pills">
+                  <span class="skill-pill">PyTorch</span>
+                  <span class="skill-pill">TensorFlow</span>
+                  <span class="skill-pill">CNNs</span>
+                  <span class="skill-pill">Transfer Learning</span>
+                  <span class="skill-pill">Grad-CAM</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skill Card 3 -->
+            <div class="services-card">
+              <div class="services-card-top">
+                <span class="services-card-num">03</span>
+                <span class="services-card-tag">Data Science</span>
+              </div>
+              <div class="services-card-mid">
+                <h3>Python Data Ecosystem</h3>
+                <p>Scientific computing, feature transformation, dimensional reduction, and statistical visualization.</p>
+                <div class="services-skills-pills">
+                  <span class="skill-pill">NumPy</span>
+                  <span class="skill-pill">Pandas</span>
+                  <span class="skill-pill">Scikit-learn</span>
+                  <span class="skill-pill">Matplotlib</span>
+                  <span class="skill-pill">Seaborn</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skill Card 4 -->
+            <div class="services-card">
+              <div class="services-card-top">
+                <span class="services-card-num">04</span>
+                <span class="services-card-tag">Web &amp; APIs</span>
+              </div>
+              <div class="services-card-mid">
+                <h3>Backend &amp; Web Systems</h3>
+                <p>Constructing high-performance asynchronous REST endpoints and interactive modern interfaces.</p>
+                <div class="services-skills-pills">
+                  <span class="skill-pill">FastAPI</span>
+                  <span class="skill-pill">REST APIs</span>
+                  <span class="skill-pill">Next.js</span>
+                  <span class="skill-pill">React</span>
+                  <span class="skill-pill">Node.js</span>
+                  <span class="skill-pill">TypeScript</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skill Card 5 -->
+            <div class="services-card">
+              <div class="services-card-top">
+                <span class="services-card-num">05</span>
+                <span class="services-card-tag">Storage</span>
+              </div>
+              <div class="services-card-mid">
+                <h3>Databases &amp; Vector Stores</h3>
+                <p>Managing relational schemas, managed cloud instances, and high-dimensional semantic search indexes.</p>
+                <div class="services-skills-pills">
+                  <span class="skill-pill">PostgreSQL</span>
+                  <span class="skill-pill">Supabase</span>
+                  <span class="skill-pill">MySQL</span>
+                  <span class="skill-pill">Vector Databases</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skill Card 6 -->
+            <div class="services-card">
+              <div class="services-card-top">
+                <span class="services-card-num">06</span>
+                <span class="services-card-tag">DevOps</span>
+              </div>
+              <div class="services-card-mid">
+                <h3>Engineering Workflows</h3>
+                <p>Reproducible development with version control, containerization, and continuous integration.</p>
+                <div class="services-skills-pills">
+                  <span class="skill-pill">Git</span>
+                  <span class="skill-pill">GitHub Actions</span>
+                  <span class="skill-pill">Docker</span>
+                  <span class="skill-pill">Jupyter</span>
+                  <span class="skill-pill">VS Code</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skill Card 7 -->
+            <div class="services-card">
+              <div class="services-card-top">
+                <span class="services-card-num">07</span>
+                <span class="services-card-tag">Emerging AI</span>
+              </div>
+              <div class="services-card-mid">
+                <h3>Next-Gen Paradigms</h3>
+                <p>Actively investigating agentic decision frameworks, tool orchestration, and multi-hop retrieval.</p>
+                <div class="services-skills-pills">
+                  <span class="skill-pill">AI Agents</span>
+                  <span class="skill-pill">MCP</span>
+                  <span class="skill-pill">Advanced RAG</span>
+                  <span class="skill-pill">MLOps</span>
+                  <span class="skill-pill">System Design</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 4: Milestones & Recognition (#awards)
+         ========================================================================== -->
+    <section id="awards">
+      <div class="awards-header">
+        <h2>Applied Milestones</h2>
+      </div>
+
+      <div class="awards-list">
+        <div class="award-item">
+          <div class="award-left">
+            <h3>FactoryMind AI &amp; SatQuery AI Platforms</h3>
+            <p>Engineered Digital Twin simulation pipelines &amp; geospatial satellite intelligence architectures</p>
+          </div>
+          <div class="award-right"><span class="award-category">Systems &amp; Research</span></div>
+        </div>
+        <div class="award-item">
+          <div class="award-left">
+            <h3>Explainable AI in Medical Diagnostics</h3>
+            <p>Implemented CNN &amp; Grad-CAM visual interpretability pipeline for retinal abnormality detection</p>
+          </div>
+          <div class="award-right"><span class="award-category">Deep Learning</span></div>
+        </div>
+        <div class="award-item">
+          <div class="award-left">
+            <h3>ScamShield &amp; Healthcare ML Inference Services</h3>
+            <p>Deployed end-to-end NLP threat classification and heart disease prediction microservices</p>
+          </div>
+          <div class="award-right"><span class="award-category">Applied ML</span></div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- Terminal footer -->
-  <div class="boot-lines">
-    <span>SYSTEM READY</span>&nbsp;&nbsp;<span class="blink">█</span>
+  <!-- ==========================================================================
+       Section 5: Footer & CTA (#footer)
+       ========================================================================== -->
+  <footer id="footer">
+    <!-- Bottom Radiant Background Graphic -->
+    <img src="assets/footer-bg.2y6ggh6bp2suk.svg" alt="" class="footer-bg-graphic" aria-hidden="true" />
+
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h2>Soham<br />Gaikwad.</h2>
+          <p>AI/ML Engineer &bull; B.Tech Computer Engineering</p>
+        </div>
+
+        <div class="footer-cta-wrap">
+          <p class="footer-headline" id="footer-headline">
+            Ready to Build Intelligent Systems Together?
+          </p>
+
+          <div class="footer-actions">
+            <button class="pill-button" data-action="copy-email">
+              <span class="pill-dot" aria-hidden="true"></span>
+              <span>spgaikwad2696@gmail.com</span>
+            </button>
+            <a href="Soham_Gaikwad_Resume.pdf" target="_blank" rel="noopener noreferrer" class="pill-button pill-button-secondary">
+              <span class="pill-dot" aria-hidden="true"></span>
+              <span>View Résumé (PDF)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-links" aria-label="Social profiles">
+          <a href="https://github.com/SohamG2696" target="_blank" rel="noopener noreferrer" class="footer-link social-link" aria-label="GitHub" title="GitHub"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.71 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.5-.29-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.01-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.1 1.15a10.8 10.8 0 0 1 5.64 0c2.15-1.45 3.1-1.15 3.1-1.15.61 1.55.23 2.7.11 2.98.72.78 1.16 1.78 1.16 3.01 0 4.32-2.64 5.27-5.15 5.55.4.35.76 1.03.76 2.08v3.1c0 .3.2.65.78.54A11.25 11.25 0 0 0 12 .75Z"/></svg><span class="sr-only">GitHub</span></a>
+          <a href="https://www.linkedin.com/in/soham-gaikwad-6573b0271" target="_blank" rel="noopener noreferrer" class="footer-link social-link" aria-label="LinkedIn" title="LinkedIn"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.37 24H.4V7.98h4.97V24ZM2.88 5.79A2.89 2.89 0 1 1 2.9 0a2.89 2.89 0 0 1-.02 5.79ZM24 24h-4.96v-7.8c0-1.86-.04-4.25-2.59-4.25-2.59 0-2.99 2.02-2.99 4.12V24H8.5V7.98h4.76v2.19h.07c.66-1.25 2.28-2.58 4.69-2.58 5.02 0 5.98 3.3 5.98 7.59V24Z"/></svg><span class="sr-only">LinkedIn</span></a>
+          <a href="https://www.instagram.com/soham_2696/" target="_blank" rel="noopener noreferrer" class="footer-link social-link" aria-label="Instagram" title="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.1"/></svg><span class="sr-only">Instagram</span></a>
+        </div>
+
+        <div class="footer-meta">
+          <div class="live-time-pill">
+            <span class="live-indicator" aria-hidden="true"></span>
+            <span id="live-ist-clock">Loading IST...</span>
+          </div>
+          <span>MUMBAI, INDIA</span>
+          <span>&copy; 2026 SOHAM GAIKWAD</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notice -->
+  <div class="toast-notice" id="toast-notice" role="status" aria-live="polite">
+    spgaikwad2696@gmail.com copied to clipboard!
   </div>
 
-  <script>
-    /* ── MATRIX RAIN ─────────────────────────────────── */
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
+  <!-- Local animation libraries; the page also works without them. -->
+  <script defer src="vendor/gsap.min.js"></script>
+  <script defer src="vendor/ScrollTrigger.min.js"></script>
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤゆよラリルレロワヲン0123456789ABCDEF{}[]<>/\\|+-=*&^%$#@!';
-    const fontSize = 14;
-    let columns;
-    let drops;
-
-    function initDrops() {
-      columns = Math.floor(canvas.width / fontSize);
-      drops = Array(columns).fill(1).map(() => Math.random() * -100);
-    }
-    initDrops();
-    window.addEventListener('resize', initDrops);
-
-    function drawMatrix() {
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#00ADB5';
-      ctx.font = `${fontSize}px 'Share Tech Mono', monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const char = chars[Math.floor(Math.random() * chars.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-
-        // Brighter top character
-        ctx.fillStyle = 'rgba(200, 255, 255, 0.9)';
-        ctx.fillText(char, x, y);
-
-        // Fade tail
-        ctx.fillStyle = `rgba(0, 173, 181, ${Math.random() * 0.5 + 0.2})`;
-
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i] += 0.5;
-      }
-    }
-
-    setInterval(drawMatrix, 35);
-
-    /* ── ENTER TRANSITION ──────────────────────────────── */
-    document.getElementById('enter-link').addEventListener('click', function (e) {
-      e.preventDefault();
-      const flash = document.getElementById('flash');
-      flash.style.background = '#050505';
-      flash.classList.add('active');
-      setTimeout(() => {
-        window.location.href = 'home.html';
-      }, 550);
-    });
-
-    // --- CHAIN BREAKING CURSOR ANIMATION ---
-    (function () {
-      const particles = [];
-      let lastX = window.innerWidth / 2, lastY = window.innerHeight / 2;
-
-      document.addEventListener('mousemove', (e) => {
-        const dx = e.clientX - lastX;
-        const dy = e.clientY - lastY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist > 15) {
-          createChainParticle(e.clientX, e.clientY, dx, dy);
-          lastX = e.clientX;
-          lastY = e.clientY;
-        }
-      });
-
-      function createChainParticle(x, y, dx, dy) {
-        const p = document.createElement('div');
-        p.style.cssText = `
-                position: fixed;
-                left: ${x}px;
-                top: ${y}px;
-                width: 10px;
-                height: 2px;
-                background: var(--cyan, #00ADB5);
-                box-shadow: 0 0 8px var(--cyan, #00ADB5);
-                pointer-events: none;
-                z-index: 9999;
-                border-radius: 2px;
-                transform-origin: center;
-            `;
-        document.body.appendChild(p);
-
-        const angle = Math.atan2(dy, dx);
-
-        const particle = {
-          el: p,
-          x: x,
-          y: y,
-          vx: -Math.cos(angle) * (Math.random() * 3 + 1) + (Math.random() - 0.5) * 2,
-          vy: -Math.sin(angle) * (Math.random() * 3 + 1) - 2,
-          life: 1.0,
-          rotation: angle * 180 / Math.PI,
-          rotVel: (Math.random() - 0.5) * 30
-        };
-        particles.push(particle);
-      }
-
-      function animateChain() {
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.vy += 0.2;
-          p.y += p.vy;
-          p.life -= 0.025;
-          p.rotation += p.rotVel;
-
-          p.el.style.transform = `translate(-50%, -50%) rotate(${p.rotation}deg) scale(${p.life})`;
-          p.el.style.opacity = p.life;
-
-          if (p.life <= 0) {
-            p.el.remove();
-            particles.splice(i, 1);
-          }
-        }
-        requestAnimationFrame(animateChain);
-      }
-      requestAnimationFrame(animateChain);
-    })();
-  </script>
+  <!-- Portfolio interactions -->
+  <script defer src="script.js?v=20261028-5"></script>
 </body>
-
 </html>

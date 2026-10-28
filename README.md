@@ -1,31 +1,23 @@
-# Personal Portfolio Website
+# Soham Gaikwad — Portfolio
 
-## Project Overview
-A personal portfolio website showcasing my skills,
-projects, resume, and experience.
+A static portfolio with responsive layouts, scroll-driven project and skills showcases, social links, and a downloadable résumé. No build step or package installation is needed.
 
-## Technologies Used
-- HTML
-- CSS
-- JavaScript
-- Git
-- GitHub
-- GitHub Pages
+## Local preview
 
-## Features
-- About Me
-- Skills
-- Projects
-- Resume
-- Contact
-- Responsive design
+Run `python server.py` from this folder, then open http://localhost:8000/.
 
-## Deployment
-The website is deployed using GitHub Pages.
+## Project files
 
-Live Website:
-https://sohamg2696.github.io/
+- `index.html`: all portfolio content and links.
+- `style.css`: design, responsive layouts, and motion fallbacks.
+- `script.js`: scroll animations, project navigation, email copying, and the IST clock.
+- `assets/`: the robot hero, five project previews, and footer background.
+- `vendor/`: local GSAP and ScrollTrigger libraries required for animations.
+- `Soham_Gaikwad_Resume.pdf`: the current résumé linked by the website.
+- `favicon.svg`: browser icon.
+- `home.html`: a small redirect preserving the previous homepage URL.
+- `server.py`: local preview server with caching disabled.
 
-## Version Control
-Git and GitHub are used to track project development
-and maintain version history.
+Edit content and social links in `index.html`. The copy-email buttons use the email text shown in the footer.
+
+The site uses native browser scrolling. If animation libraries are unavailable or reduced motion is enabled, content remains accessible in a static layout.
