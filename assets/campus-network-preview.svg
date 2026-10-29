@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1376" height="768" viewBox="0 0 1376 768" fill="none">
+  <defs>
+    <radialGradient id="halo"><stop stop-color="#0d5360"/><stop offset="1" stop-color="#08141e"/></radialGradient>
+    <linearGradient id="panel" x2="1" y2="1"><stop stop-color="#153440"/><stop offset="1" stop-color="#0b1c29"/></linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" stroke="#51a7b5" stroke-opacity=".09"/></pattern>
+  </defs>
+  <path fill="#08141e" d="M0 0h1376v768H0z"/>
+  <ellipse cx="700" cy="270" rx="650" ry="470" fill="url(#halo)"/>
+  <path fill="url(#grid)" d="M0 0h1376v768H0z"/>
+  <g font-family="Arial, sans-serif">
+    <text x="65" y="70" fill="#8ce5df" font-size="16" letter-spacing="4">SMART CAMPUS / NETWORK OPERATIONS</text>
+    <text x="65" y="110" fill="#c8dce3" font-size="14" letter-spacing="2">TELEMETRY · INTRUSION DETECTION · RESILIENCE</text>
+    <g stroke="#59d4cf" stroke-width="2" stroke-opacity=".65">
+      <path d="M330 250H470L570 320M1046 250H906L806 320M330 460H470L570 380M1046 460H906L806 380"/>
+      <path d="M688 200V260M688 440V505" stroke-dasharray="7 7"/>
+      <circle cx="688" cy="350" r="190" stroke-opacity=".13"/>
+      <circle cx="688" cy="350" r="230" stroke-opacity=".08"/>
+    </g>
+    <g fill="url(#panel)" stroke="#4e9da6" stroke-opacity=".55">
+      <rect x="165" y="195" width="220" height="110" rx="16"/>
+      <rect x="991" y="195" width="220" height="110" rx="16"/>
+      <rect x="165" y="405" width="220" height="110" rx="16"/>
+      <rect x="991" y="405" width="220" height="110" rx="16"/>
+      <rect x="565" y="260" width="246" height="180" rx="22" stroke="#66dcd2"/>
+      <rect x="583" y="145" width="210" height="55" rx="27"/>
+    </g>
+    <g text-anchor="middle">
+      <text x="275" y="242" fill="#e4f2f4" font-size="22">Academic Block</text>
+      <text x="275" y="276" fill="#6fa2ae" font-size="14" letter-spacing="2">CAMPUS NODE 01</text>
+      <text x="1101" y="242" fill="#e4f2f4" font-size="22">Research Lab</text>
+      <text x="1101" y="276" fill="#6fa2ae" font-size="14" letter-spacing="2">CAMPUS NODE 02</text>
+      <text x="275" y="452" fill="#e4f2f4" font-size="22">Primary Server</text>
+      <text x="275" y="486" fill="#6fa2ae" font-size="14" letter-spacing="2">LIVE TELEMETRY</text>
+      <text x="1101" y="452" fill="#e4f2f4" font-size="22">Backup Server</text>
+      <text x="1101" y="486" fill="#6fa2ae" font-size="14" letter-spacing="2">AUTOMATED FAILOVER</text>
+      <text x="688" y="180" fill="#9de7dc" font-size="16" letter-spacing="2">PACKET TELEMETRY</text>
+      <text x="688" y="385" fill="#d8f9f3" font-size="22">AI Intrusion Detection</text>
+      <text x="688" y="414" fill="#79aea9" font-size="13" letter-spacing="3">LIGHTGBM / FASTAPI</text>
+    </g>
+    <path d="m688 286 28 11v21c0 19-28 34-28 34s-28-15-28-34v-21l28-11Z" stroke="#8be4d5" stroke-width="3" fill="#174b4d"/>
+    <path d="m677 317 8 8 15-18" stroke="#a5f6df" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="#80e3d2"><circle cx="470" cy="250" r="5"/><circle cx="906" cy="250" r="5"/><circle cx="470" cy="460" r="5"/><circle cx="906" cy="460" r="5"/></g>
+    <text x="65" y="700" fill="#508088" font-size="12" letter-spacing="3">SYSTEM ARCHITECTURE / SOHAM GAIKWAD</text>
+  </g>
+</svg>

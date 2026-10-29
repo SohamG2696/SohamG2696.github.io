@@ -93,7 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
           scrollTrigger: { trigger: '#portfolio', start: 'top bottom', end: 'top top', scrub: true }
         });
 
-        cards.forEach((card, i) => gsap.set(card, { zIndex: i + 1, yPercent: i ? 100 : 0, filter: 'brightness(1)' }));
+        // An opacity-only shade keeps the stack depth without rasterizing every
+        // image through an animated brightness filter on each scroll frame.
+        const cardShades = cards.map((card, i) => {
+          const shade = document.createElement('span');
+          shade.className = 'portfolio-card-shade';
+          shade.setAttribute('aria-hidden', 'true');
+          card.append(shade);
+          gsap.set(card, { zIndex: i + 1, yPercent: i ? 100 : 0 });
+          return shade;
+        });
         let active = -1;
         const transitionStarts = [];
         const projectTimeline = gsap.timeline({ scrollTrigger: {
@@ -110,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 1; i < cards.length; i++) {
           const start = dwell + (i - 1) * (transition + dwell);
           transitionStarts.push(start);
-          projectTimeline.to(cards[i - 1], { filter: 'brightness(0.3)', duration: transition, ease: 'none' }, start)
+          projectTimeline.to(cardShades[i - 1], { opacity: 0.7, duration: transition, ease: 'none' }, start)
             .to(cards[i], { yPercent: 0, duration: transition, ease: 'power2.inOut' }, start)
             .addLabel(`project-${i}`, start + transition + dwell / 2);
         }
@@ -137,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
           root.style.removeProperty('--scene-height');
           ['#hero', '#portfolio', '#services'].forEach(id => $(id).style.height = '');
           ScrollTrigger.removeEventListener('refreshInit', sizeScenes);
+          cardShades.forEach(shade => shade.remove());
           setProject(0);
         };
       });
@@ -152,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     all('#hero, #portfolio, #services').forEach(el => el.style.height = '');
     if (hasMotion) gsap.set(all('#header, #hero-av-img, #hero-title .word-inner, #hero-badge, .hero-subtitle, .hero-supporting-item, .hero-container, .hero-collage, .marquee-col-1, .marquee-col-2, .portfolio-preview-card, .services-row, .award-item, .services-intro p, .footer-top, .portfolio-header h2, .services-intro h2, .awards-header h2'), { clearProps: 'all' });
     projectTrigger = null;
+    all('.portfolio-card-shade').forEach(shade => shade.remove());
     setProject(0);
   }
 
@@ -165,15 +176,31 @@ document.addEventListener('DOMContentLoaded', () => {
       [...word].forEach(letter => { const span = document.createElement('span'); span.className = 'char'; span.textContent = letter; wrap.append(span); });
       headline.append(wrap, document.createTextNode(' '));
     });
+    const letters = [...headline.querySelectorAll('.char')];
+    let hoverFrame = 0;
+    let pointerX = 0;
     headline.addEventListener('pointermove', event => {
       if (reduced.matches || event.pointerType === 'touch') return;
-      headline.querySelectorAll('.char').forEach(char => {
-        const box = char.getBoundingClientRect();
-        const strength = Math.max(0, 1 - Math.abs(event.clientX - box.left - box.width / 2) / 100);
-        char.style.transform = `translateY(${-14 * strength}px)`;
+      pointerX = event.clientX;
+      if (hoverFrame) return;
+      hoverFrame = requestAnimationFrame(() => {
+        hoverFrame = 0;
+        // Read all positions before writing styles to avoid repeated layouts.
+        const centers = letters.map(char => {
+          const box = char.getBoundingClientRect();
+          return box.left + box.width / 2;
+        });
+        letters.forEach((char, i) => {
+          const strength = Math.max(0, 1 - Math.abs(pointerX - centers[i]) / 100);
+          char.style.transform = `translateY(${-14 * strength}px)`;
+        });
       });
     });
-    headline.addEventListener('pointerleave', () => headline.querySelectorAll('.char').forEach(char => char.style.transform = ''));
+    headline.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(hoverFrame);
+      hoverFrame = 0;
+      letters.forEach(char => char.style.transform = '');
+    });
   }
   const contactEmail = $('#footer [data-action="copy-email"]').textContent.trim();
   let toastTimer;

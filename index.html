@@ -9,13 +9,11 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
-  <!-- Google Fonts: Host Grotesk & JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Locally hosted fonts keep the page independent of external font servers. -->
+  <link rel="preload" href="assets/fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261028-5" />
+  <link rel="stylesheet" href="style.css?v=20261029-1" />
 </head>
 <body class="elenavoss-body">
 
@@ -51,21 +49,21 @@
           <!-- Column 1 -->
           <div class="hero-collage-col marquee-col-1">
             <div class="hero-collage-item">
-              <img src="assets/factorymind-preview.jpg" alt="FactoryMind AI Digital Twin" loading="lazy" />
+              <img src="assets/factorymind-preview.webp" alt="FactoryMind AI Digital Twin" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="hero-collage-caption">
                 <h4>FactoryMind AI</h4>
                 <span>Digital Twin / Agentic AI</span>
               </div>
             </div>
             <div class="hero-collage-item">
-              <img src="assets/retinal-preview.jpg" alt="AI Retinal Disease Predictor" loading="lazy" />
+              <img src="assets/retinal-preview.webp" alt="AI Retinal Disease Predictor" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="hero-collage-caption">
                 <h4>AI Retinal Predictor</h4>
                 <span>Deep CNN &amp; Grad-CAM</span>
               </div>
             </div>
             <div class="hero-collage-item">
-              <img src="assets/satquery-preview.jpg" alt="SatQuery AI Platform" loading="lazy" />
+              <img src="assets/satquery-preview.webp" alt="SatQuery AI Platform" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="hero-collage-caption">
                 <h4>SatQuery AI</h4>
                 <span>Geospatial Intelligence</span>
@@ -76,21 +74,21 @@
           <!-- Column 2 -->
           <div class="hero-collage-col marquee-col-2">
             <div class="hero-collage-item">
-              <img src="assets/satquery-preview.jpg" alt="SatQuery AI Platform" loading="lazy" />
+              <img src="assets/satquery-preview.webp" alt="SatQuery AI Platform" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="hero-collage-caption">
                 <h4>SatQuery AI</h4>
                 <span>Geospatial Intelligence</span>
               </div>
             </div>
             <div class="hero-collage-item">
-              <img src="assets/scamshield-preview.jpg" alt="ScamShield Security Engine" loading="lazy" />
+              <img src="assets/scamshield-preview.webp" alt="ScamShield Security Engine" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="hero-collage-caption">
                 <h4>ScamShield</h4>
                 <span>NLP Risk Classification</span>
               </div>
             </div>
             <div class="hero-collage-item">
-              <img src="assets/heart-preview.jpg" alt="Heart Disease Predictor" loading="lazy" />
+              <img src="assets/heart-preview.webp" alt="Heart Disease Predictor" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="hero-collage-caption">
                 <h4>Heart Disease Predictor</h4>
                 <span>FastAPI Clinical Inference</span>
@@ -127,8 +125,8 @@
           </div>
 
           <!-- Central Layered Artwork Mask Reveal -->
-          <div class="hero-av-img hero-mask-reveal" id="hero-av-img" aria-hidden="true">
-            <img src="assets/hero-ai-agent.png" alt="Futuristic AI agent robot with amber lighting" width="1024" height="1536" fetchpriority="high" />
+          <div class="hero-av-img hero-mask-reveal" id="hero-av-img">
+            <img src="assets/soham-portrait.webp" alt="Soham Gaikwad" width="1024" height="1536" fetchpriority="high" />
           </div>
         </div>
       </div>
@@ -143,7 +141,7 @@
       <div class="portfolio-sticky">
         <div class="portfolio-header">
           <h2>Featured Projects</h2>
-          <span class="portfolio-count">[ 05 SELECTED WORKS ]</span>
+          <span class="portfolio-count">[ 06 SELECTED WORKS ]</span>
         </div>
 
         <div class="portfolio-body">
@@ -197,6 +195,15 @@
                   <p>Machine Learning &bull; Healthcare &bull; FastAPI</p>
                 </div>
               </div>
+
+              <!-- Item 06 -->
+              <div class="portfolio-nav-item" data-project-index="5">
+                <span class="portfolio-nav-dot" aria-hidden="true"></span>
+                <div class="portfolio-nav-text">
+                  <h3>06 &nbsp;AI-Enhanced Campus Network</h3>
+                  <p>Network Monitoring &bull; LightGBM &bull; FastAPI</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -204,7 +211,7 @@
           <div class="portfolio-preview-wrap">
             <!-- Card 01 -->
             <div class="portfolio-preview-card" data-card-index="0">
-              <img src="assets/factorymind-preview.jpg" alt="FactoryMind AI Digital Twin Interface" />
+              <img src="assets/factorymind-preview.webp" alt="FactoryMind AI Digital Twin Interface" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="portfolio-card-overlay">
                 <div class="portfolio-card-tags">
                   <span class="portfolio-tag">Digital Twin</span>
@@ -227,7 +234,7 @@
 
             <!-- Card 02 -->
             <div class="portfolio-preview-card" data-card-index="1">
-              <img src="assets/satquery-preview.jpg" alt="SatQuery AI Geospatial Intelligence" />
+              <img src="assets/satquery-preview.webp" alt="SatQuery AI Geospatial Intelligence" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="portfolio-card-overlay">
                 <div class="portfolio-card-tags">
                   <span class="portfolio-tag">Computer Vision</span>
@@ -249,7 +256,7 @@
 
             <!-- Card 03 -->
             <div class="portfolio-preview-card" data-card-index="2">
-              <img src="assets/retinal-preview.jpg" alt="AI Retinal Disease Predictor with Grad-CAM" />
+              <img src="assets/retinal-preview.webp" alt="AI Retinal Disease Predictor with Grad-CAM" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="portfolio-card-overlay">
                 <div class="portfolio-card-tags">
                   <span class="portfolio-tag">Deep Learning</span>
@@ -271,7 +278,7 @@
 
             <!-- Card 04 -->
             <div class="portfolio-preview-card" data-card-index="3">
-              <img src="assets/scamshield-preview.jpg" alt="ScamShield Threat Analyzer" />
+              <img src="assets/scamshield-preview.webp" alt="ScamShield Threat Analyzer" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="portfolio-card-overlay">
                 <div class="portfolio-card-tags">
                   <span class="portfolio-tag">NLP Classification</span>
@@ -293,7 +300,7 @@
 
             <!-- Card 05 -->
             <div class="portfolio-preview-card" data-card-index="4">
-              <img src="assets/heart-preview.jpg" alt="AI Heart Disease Clinical Inference" />
+              <img src="assets/heart-preview.webp" alt="AI Heart Disease Clinical Inference" width="1376" height="768" loading="lazy" decoding="async" />
               <div class="portfolio-card-overlay">
                 <div class="portfolio-card-tags">
                   <span class="portfolio-tag">Machine Learning</span>
@@ -309,6 +316,28 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
                   </a>
                   <a href="#footer" class="portfolio-btn" data-action="copy-email">Inspect Pipeline</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 06 -->
+            <div class="portfolio-preview-card" data-card-index="5">
+              <img src="assets/campus-network-preview.svg" alt="Campus network architecture connecting live telemetry, AI intrusion detection, and primary and backup servers" width="1376" height="768" loading="lazy" decoding="async" />
+              <div class="portfolio-card-overlay">
+                <div class="portfolio-card-tags">
+                  <span class="portfolio-tag">LightGBM</span>
+                  <span class="portfolio-tag">FastAPI</span>
+                  <span class="portfolio-tag">React</span>
+                  <span class="portfolio-tag">Wireshark</span>
+                </div>
+                <h4>AI-Enhanced Campus Network</h4>
+                <p>A unified network operations center combining live packet telemetry, LightGBM intrusion detection, and automated primary/backup failover for a distributed campus network.</p>
+                <div class="portfolio-card-actions">
+                  <a href="mailto:spgaikwad2696@gmail.com?subject=AI-Enhanced%20Campus%20Network%20Walkthrough" class="portfolio-btn portfolio-btn-primary">
+                    <span>Request a Walkthrough</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                  </a>
+                  <a href="#footer" class="portfolio-btn" data-action="copy-email">Discuss the Architecture</a>
                 </div>
               </div>
             </div>
@@ -565,6 +594,6 @@
   <script defer src="vendor/ScrollTrigger.min.js"></script>
 
   <!-- Portfolio interactions -->
-  <script defer src="script.js?v=20261028-5"></script>
+  <script defer src="script.js?v=20261029-1"></script>
 </body>
 </html>
