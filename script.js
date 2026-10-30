@@ -29,6 +29,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); item.click(); }
     });
   });
+  // Measure the actual node centers so the connector follows every project,
+  // including wrapped titles and changes to the number of cards.
+  const projectNav = $('.portfolio-nav');
+  const sizeProjectTrack = () => {
+    const dots = all('.portfolio-nav-dot');
+    if (!dots.length || !dots[0].getClientRects().length) return;
+    const navBox = projectNav.getBoundingClientRect();
+    const first = dots[0].getBoundingClientRect();
+    const last = dots[dots.length - 1].getBoundingClientRect();
+    const top = first.top + first.height / 2 - navBox.top;
+    const height = last.top + last.height / 2 - navBox.top - top;
+    projectNav.style.setProperty('--project-track-top', `${top}px`);
+    projectNav.style.setProperty('--project-track-height', `${height}px`);
+    projectNav.style.setProperty('--project-track-left', `${first.left + first.width / 2 - navBox.left - 1}px`);
+  };
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(sizeProjectTrack).observe(projectNav);
+  window.addEventListener('resize', sizeProjectTrack, { passive: true });
+  if (document.fonts?.ready) document.fonts.ready.then(sizeProjectTrack);
+  sizeProjectTrack();
   let projectTrigger;
   let projectStops = [];
   items.forEach((item, i) => item.addEventListener('click', () => {
@@ -67,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
           $('#hero').style.height = `${height * 3}px`;
           $('#portfolio').style.height = `${height * (cards.length * 0.85 + 1)}px`;
           $('#services').style.height = `${height + distance() + $('.services-intro').offsetHeight}px`;
+          sizeProjectTrack();
         };
         sizeScenes();
         ScrollTrigger.addEventListener('refreshInit', sizeScenes);
@@ -105,25 +125,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         let active = -1;
         const transitionStarts = [];
+        const dwell = 0.45;
+        const transition = 1;
         const projectTimeline = gsap.timeline({ scrollTrigger: {
-          trigger: '#portfolio', start: 'top top', end: 'bottom bottom', scrub: 0.55, invalidateOnRefresh: true
+          trigger: '#portfolio', start: 'top top', end: 'bottom bottom', scrub: 0.35, invalidateOnRefresh: true
         }, onUpdate: () => {
           const time = projectTimeline.time();
-          const index = transitionStarts.filter(start => time >= start + 0.52).length;
+          const index = transitionStarts.filter(start => time >= start + transition * 0.65).length;
           if (index !== active) { active = index; setProject(index); }
           $('#portfolio-progress').style.transform = `scaleY(${Math.max(0.025, projectTimeline.progress())})`;
         } });
-        const dwell = 0.32;
-        const transition = 0.8;
         projectTimeline.addLabel('project-0', dwell / 2);
         for (let i = 1; i < cards.length; i++) {
           const start = dwell + (i - 1) * (transition + dwell);
           transitionStarts.push(start);
           projectTimeline.to(cardShades[i - 1], { opacity: 0.7, duration: transition, ease: 'none' }, start)
+            .to(cards[i - 1], { scale: 0.97, yPercent: -3, duration: transition, ease: 'power2.inOut' }, start)
             .to(cards[i], { yPercent: 0, duration: transition, ease: 'power2.inOut' }, start)
             .addLabel(`project-${i}`, start + transition + dwell / 2);
         }
-        projectTimeline.to({}, { duration: dwell });
+        // Give the last card a short reading stop, then release the sticky scene.
+        // Keep its navigation label inside the timeline without a long empty tail.
+        projectTimeline.to({}, { duration: dwell / 2 });
         projectTrigger = projectTimeline.scrollTrigger;
         projectStops = cards.map((_, i) => projectTimeline.labels[`project-${i}`] / projectTimeline.duration());
         setProject(0);

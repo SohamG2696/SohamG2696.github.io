@@ -1,8 +1,13 @@
 /* Soham Gaikwad — portfolio styles, responsive layouts, and scroll scenes. */
 
 @font-face {
-  font-family: 'Host Grotesk'; font-style: normal; font-weight: 300 800; font-display: swap;
-  src: url('assets/fonts/host-grotesk-latin.woff2') format('woff2');
+  font-family: 'Manrope'; font-style: normal; font-weight: 400 800; font-display: swap;
+  src: url('assets/fonts/manrope-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Space Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url('assets/fonts/space-grotesk-latin.woff2') format('woff2');
 }
 
 @font-face {
@@ -19,7 +24,8 @@
   --text-white: #ffffff;
   --text-muted: rgba(255, 255, 255, 0.72);
   --text-dim: rgba(255, 255, 255, 0.42);
-  --font-sans: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Space Grotesk', 'Manrope', sans-serif;
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --default-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -405,12 +411,7 @@ svg {
 
 .hero-av-img {
   position: absolute;
-  bottom: -16%;
-  left: 50%;
   transform: translateX(-50%);
-  width: 58vw;
-  max-width: 620px;
-  height: 95vh;
   z-index: 2;
   pointer-events: none;
   will-change: opacity, transform;
@@ -424,8 +425,6 @@ svg {
 .hero-av-img img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: bottom center;
 }
 
 #portfolio {
@@ -498,19 +497,19 @@ svg {
 
 .portfolio-nav-track {
   position: absolute;
-  left: 5px;
-  top: 2.2vw;
+  left: var(--project-track-left, 5px);
+  top: var(--project-track-top, 0px);
   width: 2px;
-  height: 22vw;
+  height: var(--project-track-height, 100%);
   background: rgba(255, 255, 255, 0.2);
 }
 
 .portfolio-nav-progress {
   position: absolute;
-  left: 5px;
-  top: 2.2vw;
+  left: var(--project-track-left, 5px);
+  top: var(--project-track-top, 0px);
   width: 2px;
-  height: 22vw;
+  height: var(--project-track-height, 100%);
   background: #ffffff;
   transform-origin: top;
   transform: scaleY(0);
@@ -1161,12 +1160,6 @@ svg {
     font-size: 1.8vw;
   }
 
-  .hero-av-img {
-    width: 120vw;
-    height: 90vh;
-    bottom: -30%;
-  }
-
   #portfolio {
     height: 320vh;
   }
@@ -1354,12 +1347,6 @@ svg {
     font-size: 2.8vw;
   }
 
-  .hero-av-img {
-    width: 160vw;
-    height: 80vh;
-    bottom: -20%;
-  }
-
   .portfolio-header h2 {
     font-size: 9vw;
   }
@@ -1502,14 +1489,6 @@ footer {
 
 .pill-button .pill-dot {
   min-width: 6px; min-height: 6px;
-}
-
-.hero-av-img {
-  width: 65vw; max-width: 920px; height: 110%; bottom: -12%; left: 55%;
-}
-
-.hero-av-img img {
-  object-fit: cover; object-position: center 25%;
 }
 
 .hero-left {
@@ -1689,7 +1668,7 @@ html:not(.scroll-scenes) .services-card {
   }
 
   .hero-av-img {
-    width: 120vw; height: 100%; left: 65%; bottom: -8%; opacity: .75;
+    opacity: .75;
   }
 
   .hero-collage-item {
@@ -1769,10 +1748,6 @@ html:not(.scroll-scenes) .services-card {
 
   .hero-right {
     flex-direction: column; gap: 16px;
-  }
-
-  .hero-av-img {
-    left: 72%; width: 150vw;
   }
 
   .hero-collage-caption span {
@@ -1982,7 +1957,7 @@ html:not(.scroll-scenes) .services-card {
 }
 
 .scroll-scenes .portfolio-card-overlay {
-  max-height: 100%; overflow-y: auto; overscroll-behavior: contain;
+  max-height: 100%; overflow-y: auto; overscroll-behavior: auto;
 }
 
 .scroll-scenes .services-sticky {
@@ -2195,26 +2170,6 @@ html:not(.scroll-scenes) .services-card {
   z-index: 3;
 }
 
-.hero-av-img {
-  width: 54vw; max-width: 840px; height: 110%; left: 57%; bottom: -10%;
-}
-
-.hero-av-img img {
-  object-fit: cover; object-position: center top;
-}
-
-@media (max-width: 1025px) {
-  .hero-av-img {
-    width: 100%; max-width: none; height: 100%; left: 66%; bottom: -8%;
-  }
-}
-
-@media (max-width: 640px) {
-  .hero-av-img {
-    width: 110vw; left: 68%; bottom: -8%;
-  }
-}
-
 .hero-subtitle {
   margin-top: 24px; font-size: clamp(16px, 1.45vw, 25px); line-height: 1.45; letter-spacing: -.015em;
 }
@@ -2309,7 +2264,12 @@ html:not(.scroll-scenes) .services-card {
 .hero-av-img {
   width: min(47vw, 720px); max-width: none; height: 96%; left: 59%; bottom: -4%;
 }
-.hero-av-img img { object-fit: contain; object-position: center bottom; }
+.hero-av-img img {
+  object-fit: contain;
+  object-position: center bottom;
+  transform: scale(1.28);
+  transform-origin: center top;
+}
 @media (max-width: 1025px) {
   .hero-av-img { width: 65vw; height: 88%; left: 68%; bottom: -4%; }
 }
@@ -2318,4 +2278,18 @@ html:not(.scroll-scenes) .services-card {
   .hero-content-wrapper { align-self: stretch; padding-top: 0; }
   .hero-left { align-self: flex-start; }
   .hero-right { align-self: flex-end; }
+}
+
+/* Geometric display type paired with a quieter, readable body face. */
+h1, h2, h3, h4, .footer-headline { font-family: var(--font-heading); }
+body { line-height: 1.55; }
+.hero-title { font-weight: 500; letter-spacing: -.055em; line-height: 1.02; }
+.hero-title .word-inner { white-space: nowrap; }
+.header-logo { gap: 12px; }
+.header-logo .sg-monogram { width: 68px; height: 54px; flex-shrink: 0; }
+.header-nav-link { font-weight: 500; }
+.portfolio-card-overlay h4, .services-card-mid h3, .award-left h3 { letter-spacing: -.035em; }
+@media (max-width: 640px) {
+  .header-logo .sg-monogram { width: 54px; height: 44px; }
+  .scroll-scenes .hero-title, .hero-title { font-size: clamp(34px, 10.5vw, 60px); }
 }

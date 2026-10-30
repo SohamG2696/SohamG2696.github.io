@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64" fill="none">
+  <title>SG — Soham Gaikwad</title>
+  <rect x="1" y="1" width="78" height="62" rx="15" stroke="white" stroke-opacity=".25" stroke-width="1.5"/>
+  <path d="M33 20H23c-5 0-8 3-8 7s3 6 8 6h3c5 0 8 2 8 6s-3 6-8 6H15M64 21c-2-1-5-2-8-2-8 0-13 5-13 13s5 13 13 13c4 0 7-1 9-3V32H55" stroke="white" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="round"/>
+  <path d="M59 62h5c8 0 14-6 14-14v-4" stroke="#ff8a3d" stroke-width="3" stroke-linecap="round"/>
+</svg>

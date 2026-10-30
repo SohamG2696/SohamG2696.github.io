@@ -1,31 +1,33 @@
 # Soham Gaikwad — Portfolio
 
-A static portfolio with responsive layouts, scroll-driven project and skills showcases, social links, and a downloadable résumé. No build step or package installation is needed.
+A responsive static portfolio featuring an SG monogram, anime portrait, six animated project showcases, technical skills, milestones, social links, and a downloadable résumé.
 
 ## Local preview
 
-Run `python server.py` from this folder, then open http://localhost:8000/.
+Run `python server.py` and open http://localhost:8000/. No build step or package installation is needed. Stop the server with Ctrl+C.
 
-## Project files
+## Files
 
-- `index.html`: all portfolio content and links.
-- `style.css`: design, responsive layouts, and motion fallbacks.
-- `script.js`: scroll animations, project navigation, email copying, and the IST clock.
-- `assets/`: the portrait, six project previews, local fonts with licenses, and footer background.
-- `vendor/`: local GSAP and ScrollTrigger libraries required for animations.
-- `Soham_Gaikwad_Resume.pdf`: the current résumé linked by the website.
-- `favicon.svg`: browser icon.
-- `home.html`: a small redirect preserving the previous homepage URL.
-- `server.py`: concurrent local preview server with caching disabled and a fixed project root.
+- `index.html`: page content, navigation, and social links.
+- `style.css`: layout, typography, responsive styles, and motion fallbacks.
+- `script.js`: scroll animations, project selection, email copying, and the IST clock.
+- `assets/`: active portrait, project previews, logo, background, and locally hosted fonts with their licenses.
+- `vendor/`: GSAP and ScrollTrigger, used by the scroll animations.
+- `Soham_Gaikwad_Resume.pdf`: the résumé linked in the footer.
+- `favicon.svg`: browser icon matching the SG logo.
+- `home.html`: compatibility redirect to the main page.
+- `server.py`: local preview server with concurrent requests and caching disabled.
 
-Edit content and social links in `index.html`. The copy-email buttons use the email text shown in the footer.
+## Editing and hosting
 
-The site uses native browser scrolling. If animation libraries are unavailable or reduced motion is enabled, content remains accessible in a static layout.
+Edit content and links in `index.html`. The email-copy buttons use the address displayed in the footer. The active hero is `assets/soham-anime-round.webp`.
 
-All fonts, images, styles, and animation scripts load locally. Project previews use compressed WebP; the portrait preserves transparent edges. The campus network preview is an SVG architecture illustration.
+Upload the project files to a static host or use GitHub Pages with the repository root as the publishing source. All runtime files use relative paths and are stored locally; Python is only needed for local preview.
 
-## Portrait asset
+The site uses native scrolling. If animation scripts are unavailable or reduced motion is enabled, the content remains accessible in a static layout.
 
-`assets/soham-portrait.webp` was prepared from the supplied photo using the built-in image-generation tool and then encoded as lossless WebP. The original supplied photo is unchanged.
+## Credits
 
-Edit prompt: Extract and lightly professionally retouch the same person as a transparent hero portrait. Preserve exact identity, face proportions, skin tone, hair, mustache, physique, outfit, and crossed-arm pose. Gently even exposure, clean temporary blemishes and stray edges, reduce distracting shirt wrinkles, and add subtle warm rim light. Frame above hair to upper thighs with complete shoulders and elbows. No face reshaping, skin lightening, new clothes, text, objects, shadows, or background.
+Typography: Space Grotesk headings, Manrope body text, and JetBrains Mono labels. Font licenses are included in `assets/fonts/`. Vendor copyright notices are preserved in their library files.
+
+The anime portrait was created from the supplied photo with the built-in image-generation tool. Final edit: replace square sunglasses with round dark lenses and thin gold rims while preserving the character, pose, outfit, lighting, and transparent background.
